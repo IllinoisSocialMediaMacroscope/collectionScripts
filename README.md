@@ -1,6 +1,4 @@
 # collectionScripts
-Scripts used my the project to collect, process and store social media data from a number of sources
-
 These scripts are being created as a first step of the project to allow University of Illinois researchers to better
 access and analyze social media data for their research projects.
 
