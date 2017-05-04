@@ -64,7 +64,7 @@ def main():
         print("To download all posts break your timeframe up into groups of less than 10,000 posts.")
         print("Instagram mentions in this list will not contain the post contents")
         csvFile = codecs.open(fPath, "w+", "utf-8")
-        csvFile.write("postType,postDate,postTime,url,tweetID,contents,retweetCount,favoriteCount,location,language,sentiment,neutralScore,positiveScore,negativeScore,followers,friends,author,authorGender,authorTweets\n")
+        csvFile.write("PostType,PostDate,PostTime,URL,TweetID,Contents,RetweetCount,FavoriteCount,Location,Language,Sentiment,NeutralScore,PositiveScore,NegativeScore,Followers,Friends,Author,AuthorGender,AuthorTweets\n")
         data = webURL.read().decode('utf8')
         theJSON = json.loads(data)
         postDates = [] #These initialize the attributes of the final output
@@ -168,25 +168,26 @@ def main():
                 sentiments[c] = "Basic Negative"
             c = c + 1
         pC = 0
-        tweepys = api.statuses_lookup(id_=tempTweetIDs) #after loop the Twitter API call must run one more time to clean up all the tweets since the last 100
-        for tweet in tweepys:
-            tempID = tweet.id_str
-            postMatch = 0
-            for idMatch in tweetIDs:
-                if idMatch==tempID:
-                    tempDate = str(tweet.created_at).replace("  "," ")
-                    dateTime = tempDate.split(" ")
-                    postDates[postMatch] = dateTime[0]
-                    postTimes[postMatch] = dateTime[1]
-                    contents[postMatch] = tweet.text.replace(",","")
-                    authors[postMatch] = tweet.author.screen_name
-                    followers[postMatch] = str(tweet.author.followers_count)
-                    friends[postMatch] = str(tweet.author.friends_count)
-                    retweetCounts[postMatch] = str(tweet.retweet_count)
-                    favoritesCount[postMatch] = str(tweet.favorite_count)
-                    statusesCount[postMatch] = str(tweet.author.statuses_count)
-                postMatch = postMatch + 1
-        tweetCount = 0
+        if not tempTweetIDs: #after loop the Twitter API call must run one more time to clean up all the tweets since the last 100
+            tweepys = api.statuses_lookup(id_=tempTweetIDs) 
+            for tweet in tweepys:
+                tempID = tweet.id_str
+                postMatch = 0
+                for idMatch in tweetIDs:
+                    if idMatch==tempID:
+                        tempDate = str(tweet.created_at).replace("  "," ")
+                        dateTime = tempDate.split(" ")
+                        postDates[postMatch] = dateTime[0]
+                        postTimes[postMatch] = dateTime[1]
+                        contents[postMatch] = tweet.text.replace(",","")
+                        authors[postMatch] = tweet.author.screen_name
+                        followers[postMatch] = str(tweet.author.followers_count)
+                        friends[postMatch] = str(tweet.author.friends_count)
+                        retweetCounts[postMatch] = str(tweet.retweet_count)
+                        favoritesCount[postMatch] = str(tweet.favorite_count)
+                        statusesCount[postMatch] = str(tweet.author.statuses_count)
+                    postMatch = postMatch + 1
+            tweetCount = 0
         for pDate in postDates: #iterates through the word lists and prints matching posts to CSV
             csvFile.write(postTypes[pC]+","+pDate+","+postTimes[pC]+","+urls[pC]+","+str(tweetIDs[pC])+","+contents[pC].replace("\n"," ")+","+retweetCounts[pC]+","+favoritesCount[pC]+","+locations[pC]+","+languages[pC]+","+sentiments[pC]+","+str(neutralScore[pC])+","+str(positiveScore[pC])+","+str(negativeScore[pC])+","+followers[pC]+","+friends[pC]+","+authors[pC]+","+authorGenders[pC]+","+statusesCount[pC]+"\n")
             pC = pC + 1
