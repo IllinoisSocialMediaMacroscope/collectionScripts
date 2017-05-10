@@ -8,13 +8,13 @@ import boto3
 SIMILARITY_THRESHOLD = 0.0
 
 def main():
+    # Your AWS tokens must be entered in you AWS config file and that account must have Rekognition enabled via IAM.
+    client = boto3.client('rekognition')
     #Enter Path for image to be compared against
     sourceImage = ""
     #Enter images to be compared into list
     imageCompareArray = [""]
     for image in imageCompareArray:
-        # Your AWS tokens must be entered in you AWS config file and that account must have Rekognition enabled via IAM.
-        client = boto3.client('rekognition')
         # Our source image
         with open(sourceImage, 'rb') as source_image:
             source_bytes = source_image.read()
