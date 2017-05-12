@@ -14,7 +14,7 @@ def main():
     outputFileName = os.getcwd()+"/networkAnalysisColumns.csv"
     with open(fileName, "rU") as f, open(outputFileName, "w") as output:
         lines = csv.DictReader(f)
-        output.write("authorAccount,mentionedAccount,postType\n")
+        output.write("mentionedAccount,authorAccount,postType\n")
         authors = []
         for line in lines:
             authors.append(line['Author'])

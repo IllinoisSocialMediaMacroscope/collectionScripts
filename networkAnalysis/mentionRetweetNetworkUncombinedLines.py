@@ -11,7 +11,7 @@ def main():
     outputFileName = os.getcwd()+"/networkAnalysisUncombined.csv"
     with open(fileName, "rU") as f, open(outputFileName, "w") as output:
         lines = csv.DictReader(f)
-        output.write("authorAccount,mentionedAccount,postType\n")
+        output.write("mentionedAccount,authorAccount,postType\n")
         for line in lines:
             if(line['Contents'].startswith("RT")):
                 postType = "Retweet"
